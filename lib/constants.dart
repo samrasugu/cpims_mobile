@@ -1,3 +1,4 @@
+import 'package:cpims_mobile/providers/auth_provider.dart';
 import 'package:cpims_mobile/screens/caseload/caseload.dart';
 import 'package:cpims_mobile/screens/forms/case_record_sheet.dart';
 import 'package:cpims_mobile/screens/forms/documents_manager.dart';
@@ -5,6 +6,7 @@ import 'package:cpims_mobile/screens/forms/follow_ups.dart';
 import 'package:cpims_mobile/screens/homepage/home_page.dart';
 import 'package:cpims_mobile/screens/registry/organisation_units/organisation_units.dart';
 import 'package:cpims_mobile/screens/registry/persons_registry/persons_registry.dart';
+import 'package:cpims_mobile/services/auth_service.dart';
 // import 'package:cpims_mobile/screens/forms/alternative_family_care.dart';
 // import 'package:cpims_mobile/screens/forms/follow_ups.dart';
 // import 'package:cpims_mobile/screens/forms/institutional_placement.dart';
@@ -14,6 +16,7 @@ import 'package:cpims_mobile/screens/registry/persons_registry/persons_registry.
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/route_manager.dart';
+import 'package:provider/provider.dart';
 
 const kPrimaryColor = Color(0xff00acac);
 const kTextGrey = Color(0XFF707478);
@@ -139,7 +142,12 @@ List drawerOptions = [
   {
     'title': 'Log Out',
     'icon': FontAwesomeIcons.arrowRightFromBracket,
-    'onTap': () => {},
+    'onTap': () {
+      BuildContext? context;
+      AuthService authService =
+          AuthService(Provider.of<AuthProvider>(context!, listen: false));
+      authService.logOut(context);
+    },
     'children': []
   },
 ];

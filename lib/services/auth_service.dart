@@ -97,7 +97,7 @@ class AuthService {
 
       int? authTokenTimestamp = prefs.getInt('authTokenTimestamp');
 
-      if (refreshToken != null && authTokenTimestamp != null) {
+      if (refreshToken!.isNotEmpty && authTokenTimestamp != null) {
         int currentTimestamp = DateTime.now().millisecondsSinceEpoch;
         int tokenExpiryDuration =
             1800 * 1000; // Token expires after 30 minutes (in milliseconds)
@@ -124,18 +124,19 @@ class AuthService {
                 await prefs.remove('access');
                 await prefs.setString('access', responseData['access']);
 
-                if (context.mounted) {
-                  authProvider.setUser(UserModel(
-                    username: authProvider.user!.username,
-                    accessToken: responseData['access'],
-                    refreshToken: refreshToken,
-                  ));
-                }
+                UserModel user = authProvider.user!;
+                UserModel updatedUser = user.copyWith(
+                  accessToken: responseData['access'],
+                );
+                authProvider.setUser(updatedUser);
               },
             );
           }
         } else {
-          authProvider.setAccessToken(refreshToken);
+          // authProvider.setAccessToken(refreshToken);
+          // UserModel user = authProvider.user!;
+          // print(user.accessToken);
+          // preload dashboard data
         }
       }
     } catch (e) {

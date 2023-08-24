@@ -1,11 +1,13 @@
 import 'package:cpims_mobile/constants.dart';
 import 'package:cpims_mobile/providers/ui_provider.dart';
 import 'package:cpims_mobile/screens/homepage/widgets/homepage_card.dart';
+import 'package:cpims_mobile/services/dash_board_service.dart';
 import 'package:cpims_mobile/widgets/app_bar.dart';
 import 'package:cpims_mobile/widgets/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({Key? key}) : super(key: key);
@@ -17,10 +19,21 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage> {
   @override
   void initState() {
-    var access = context.read<UIProvider>().getAccess.toString();
-    print(">>>>>>>>>>>>>>>>>>> access >>>>>>>>>>>>> $access");
-
     super.initState();
+    getDashboardData();
+  }
+
+  getDashboardData() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    String? accessToken = prefs.getString('access');
+
+    // preload dashboard data
+    var dashResp = await DashBoardService().dashBoard(accessToken!);
+
+    if (context.mounted) {
+      context.read<UIProvider>().setDashData(dashResp);
+    }
   }
 
   @override

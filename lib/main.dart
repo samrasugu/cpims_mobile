@@ -59,10 +59,10 @@ class _CPIMSState extends State<CPIMS> {
                 future: authService.verifyToken(context: context),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
-                    return Provider.of<AuthProvider>(context, listen: false)
+                    return Provider.of<AuthProvider>(context, listen: true)
                             .user!
                             .accessToken
-                            .isNotEmpty
+                            .isEmpty
                         ? const Homepage()
                         : const LoginScreen();
                   }
