@@ -15,6 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 // final prefs = await SharedPreferences.getInstance();
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const CPIMS());
 }
 
